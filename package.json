@@ -1,0 +1,16 @@
+{
+  "name": "mithril-awesomplete",
+  "version": "1.0.0",
+  "description": "A Mithril module integrating Awesomplete",
+  "main": "autocomplete.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mithril",
+    "awesomplete",
+    "autocomplete"
+  ],
+  "author": "Steven Vervaet",
+  "license": "ISC"
+}
