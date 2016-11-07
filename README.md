@@ -46,3 +46,13 @@ Callback function that is called every time the input changes. The 'done' parame
 		});
 }
 ```
+
+## Note
+* This implementation doesn't deal with the complete API as described on the [Awesomplete page](https://leaverou.github.io/awesomplete/). If extra functionality is desired, it will have to be added to this wrapper component. Examples of functionality that didn't make it (yet):
+  * Provide an element (such as a textArea).
+  * handing it a static list of suggestions.
+  * setting a maximum of items
+  * filter
+  * sort
+  * ...
+* I made use of a lot ES6 functionality. Most browsers nowadays have a lot of ES6 implemented, but nevertheless it can be useful to run the code under a preprocessor such as Babel.
