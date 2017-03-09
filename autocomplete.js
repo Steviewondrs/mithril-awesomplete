@@ -14,9 +14,10 @@ import Awesomplete from 'awesomplete';
  * @param {String}   attrs.value    - initial value of the input
  * @param {Number}   attrs.minChars - minimum of characters before autocompleting
  * @param {Function} attrs.getValue - property getter
+ * @param {Number}	 attrs.delay - debounce the suggestions callback by this amount ( in milliseconds )
  * @param {Function} attrs.suggestions - callback function to provide suggestions. 
  */
-function config( { getValue, suggestions, minChars = 2, value = '' } ) {
+function config( { getValue, suggestions, minChars = 2, value = '', delay = 500 } ) {
 	return ( el, isInit, ctx ) => {
 
 		// Hook up awesomplete to the context.
@@ -24,6 +25,7 @@ function config( { getValue, suggestions, minChars = 2, value = '' } ) {
 			el.value     = value; // circumventing setting the value in the view.
 			ctx.prevTerm = value; // prevent autocompletion on initial render
 			ctx.awesomplete = new Awesomplete( el );
+			ctx.callSuggestions = _.debounce( suggestions , delay );
 
 			// Control how the user selection replaces the user's input.
 			// We fire of a 'change' event. This is because mithril apps rely heavily on
@@ -38,7 +40,7 @@ function config( { getValue, suggestions, minChars = 2, value = '' } ) {
 
 		let word = el.value;
 		if( word.length > minChars && ctx.prevTerm !== word ) {
-			suggestions( word, ( s ) => {
+			ctx.callSuggestions( word, ( s ) => {
 				ctx.awesomplete.list = _.uniq( _.map( s, getValue ) );
 				ctx.awesomplete.evaluate(); // must be called because list is dynamically set.
 			} );
@@ -55,7 +57,7 @@ function config( { getValue, suggestions, minChars = 2, value = '' } ) {
 	}
 }
 
-function view( __, { getValue, minChars, suggestions, oninput, value, ...attrs } ) {
+function view( __, { getValue, minChars, suggestions, oninput, value, delay, ...attrs } ) {
 	return m( 'input', {
 		config: config( { getValue, minChars, suggestions, value } ),
 		oninput: e => oninput ? oninput( e ) : e, // force redraw
